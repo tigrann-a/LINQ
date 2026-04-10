@@ -9,27 +9,59 @@ static void ShowLargeFilesWithoutLinq(string path)
     DirectoryInfo directory = new DirectoryInfo(path);
     FileInfo[] files = directory.GetFiles();
 
-    for(int i = 0; i < files.Length - 1; i++)
+    //foreach (FileInfo file in files)
+    //    Console.WriteLine($"{file.Length}");
+
+    //Bubble Sorting
+    //for(int i = 0; i < files.Length - 1; i++)
+    //{
+    //    for (int j = 0; j < files.Length - i - 1; j++)
+    //    {
+    //        if (files[j].Length < files[j + 1].Length)
+    //        {
+    //            FileInfo temp = files[j];
+    //            files[j] = files[j + 1];
+    //            files[j + 1] = temp;
+    //        }
+    //    }
+    //}
+
+    //int k = 1;
+    //foreach(var file in files)
+    //{
+    //    if(k <= 5)
+    //        Console.WriteLine($"{file.Length}");
+    //    k++;
+    //}
+
+    // Solving with Lists
+    List<FileInfo> filesCopy = new List<FileInfo>();
+    for(int k = 0; k < files.Length; k++)
     {
-        for (int j = 0; j < files.Length - i - 1; j++)
-        {
-            if (files[j].Length < files[j + 1].Length)
-            {
-                FileInfo temp = files[j];
-                files[j] = files[j + 1];
-                files[j + 1] = temp;
-            }
-        }
+        filesCopy.Add(files[k]);
     }
 
-    int k = 1;
-    foreach(var file in files)
+    for (int i = 0; i < filesCopy.Count - 1; i++)
     {
-        if(k <= 5)
-            Console.WriteLine($"{file.Length}");
-        k++;
+        int maxIndex = i;
+        for (int j = i + 1; j < filesCopy.Count; j++)
+        {
+            if (filesCopy[j].Length > filesCopy[maxIndex].Length)
+            {
+                maxIndex = j;
+            }
+        }
+
+        FileInfo temp = filesCopy[i];
+        filesCopy[i] = filesCopy[maxIndex];
+        filesCopy[maxIndex] = temp;
     }
-        
+
+    //foreach (FileInfo file in files)
+    //    Console.WriteLine(file.Length);
+
+    foreach (FileInfo file in filesCopy)
+        Console.WriteLine(file.Length);
 
     //var query = from file in new DirectoryInfo(path).GetFiles()
     //            orderby file.Length descending
@@ -74,4 +106,3 @@ static void ShowLargeFilesWithoutLinq(string path)
 //var total = numbers.Sum();
 
 //Console.WriteLine($"The sum of numbers is: {total}");
-
